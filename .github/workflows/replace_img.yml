@@ -1,0 +1,43 @@
+name: replace image Every Day .
+on:
+  schedule:
+    # * is a special character in YAML so you have to quote this string
+    - cron:  '30 0 * * *'  
+  repository_dispatch:
+    types:
+      - GetDataBase
+  # watch:
+  #   types: [started]
+
+jobs:
+  Crawler:
+    name: Crawler
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          persist-credentials: false
+
+      - name: 'Set up Python'
+        uses: actions/setup-python@v1
+        with:
+           python-version: 3.7
+
+      - name: 'Install requirements'
+        run: |
+          pip install -r ./requirements.txt
+
+      - name: 'Commit zh-CN CRAWLER files'
+        run: |
+          git add .
+          git commit -m "GitHub Actions Crawler zh-CN at $(date +'%Y-%m-%d %H:%M:%S')"
+
+      - name: Commit files
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git commit -a -m "Add changes"
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          branch: ${{ github.ref }}
