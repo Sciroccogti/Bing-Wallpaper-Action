@@ -23,10 +23,8 @@ jobs:
         run: |
           pip install -r ./requirements.txt
 
-      - name: 'Commit zh-CN CRAWLER files'
-        run: |
-          git add .
-          git commit -m "GitHub Actions Crawler zh-CN at $(date +'%Y-%m-%d %H:%M:%S')"
+      - name: 'Replace daily image'
+        run: python ./replace_img.py zh-CN
 
       - name: Commit files
         run: |
