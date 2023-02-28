@@ -2,12 +2,8 @@ name: replace image Every Day .
 on:
   schedule:
     # * is a special character in YAML so you have to quote this string
-    - cron:  '30 0 * * *'  
-  repository_dispatch:
-    types:
-      - GetDataBase
-  # watch:
-  #   types: [started]
+    - cron:  '30 0 * * *'
+  workflow_dispatch:
 
 jobs:
   Crawler:
